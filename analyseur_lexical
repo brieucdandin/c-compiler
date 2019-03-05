@@ -1,0 +1,56 @@
+%{
+#include <math.h>
+#include "y.tab.h"
+%}
+
+SPACE		[ \t]+
+DIGIT		[0-9]
+INTEGER		{DIGIT}+
+EXP			("e"|"E"|"exp")[+-]?{INTEGER}
+FLOAT		{INTEGER}("."{INTEGER})?{EXP}?
+ID			[a-zA-Z][a-zA-Z0-9\_]*
+TEXT		.*
+
+%%
+
+"main"		{return(tMAIN);}
+"printf"	{return(tPRINTF);}
+
+"if"		{return(tIF);}
+"while"		{return(tWHILE);}
+
+"int"		{return(tINT);}
+"float"		{return(tFLOAT);}
+"double"	{return(tDOUBLE);}
+
+"{"			{return(tACC_L);}
+"}"			{return(tACC_R);}
+
+{ID}		{return(tID);}
+
+
+"||"		{return(tOR);}
+"&&"		{return(tAND);}
+"=="		{return(tEQUALS);}
+"!="		{return(tDIFF);}
+
+"+"			{return(tPLUS);}
+"-"			{return(tMINUS);}
+"*"			{return(tMULT);}
+"/"			{return(tDIV);}
+"="			{return(tAFFECT);}
+"("			{return(tPAR_L);}
+")"			{return(tPAR_R);}
+
+{SPACE}		{}
+[\n]+		{}
+","			{return(tCOMA);}
+
+";"			{return(tBRK_PT);}
+
+{FLOAT}		{return(tNUMBER);}
+
+
+.* 			{printf("Error\n\n");}
+
+%%
