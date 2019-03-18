@@ -1,0 +1,699 @@
+Terminaux inutilisés dans la grammaire
+
+   tIF
+   tWHILE
+   tOR
+   tAND
+   tEQUALS
+   tDIFF
+
+
+Grammaire
+
+    0 $accept: start $end
+
+    1 start: tMAIN tPAR_L tPAR_R tACC_L content return tACC_R
+
+    2 return: tRETURN expression tBRK_PT
+
+    3 content: declarations_variables instructions
+
+    4 declarations_variables: declaration_variable declarations_variables
+    5                       | %empty
+
+    6 declaration_variable: facult_const type ids facult_assignement tBRK_PT
+
+    7 facult_const: tCONST
+    8             | %empty
+
+    9 type: tINT
+   10     | tFLOAT
+   11     | tDOUBLE
+
+   12 $@1: %empty
+
+   13 ids: tID $@1 tCOMA ids
+   14    | tID
+
+   15 facult_assignement: tAFFECT expression
+   16                   | %empty
+
+   17 instructions: instruction instructions
+   18             | %empty
+
+   19 instruction: calculus
+   20            | print
+
+   21 expression: tPAR_L expression tPAR_R
+   22           | expression tPLUS expression
+   23           | expression tMINUS expression
+   24           | expression tMULT expression
+   25           | expression tDIV expression
+   26           | tID
+   27           | tNUMBER
+
+   28 $@2: %empty
+
+   29 calculus: tID $@2 tAFFECT expression tBRK_PT
+
+   30 print: tPRINT tPAR_L expression tPAR_R tBRK_PT
+
+
+Terminaux, suivis des règles où ils apparaissent
+
+$end (0) 0
+error (256)
+tMAIN (258) 1
+tRETURN (259) 2
+tPRINT (260) 30
+tIF (261)
+tWHILE (262)
+tINT (263) 9
+tFLOAT (264) 10
+tDOUBLE (265) 11
+tCONST (266) 7
+tACC_L (267) 1
+tACC_R (268) 1
+tOR (269)
+tAND (270)
+tEQUALS (271)
+tDIFF (272)
+tPLUS (273) 22
+tMINUS (274) 23
+tMULT (275) 24
+tDIV (276) 25
+tAFFECT (277) 15 29
+tPAR_L (278) 1 21 30
+tPAR_R (279) 1 21 30
+tCOMA (280) 13
+tBRK_PT (281) 2 6 29 30
+tID (282) 13 14 26 29
+tNUMBER (283) 27
+
+
+Non-terminaux, suivis des règles où ils apparaissent
+
+$accept (29)
+    à gauche: 0
+start (30)
+    à gauche: 1, à droite: 0
+return (31)
+    à gauche: 2, à droite: 1
+content (32)
+    à gauche: 3, à droite: 1
+declarations_variables (33)
+    à gauche: 4 5, à droite: 3 4
+declaration_variable (34)
+    à gauche: 6, à droite: 4
+facult_const (35)
+    à gauche: 7 8, à droite: 6
+type (36)
+    à gauche: 9 10 11, à droite: 6
+ids (37)
+    à gauche: 13 14, à droite: 6 13
+$@1 (38)
+    à gauche: 12, à droite: 13
+facult_assignement (39)
+    à gauche: 15 16, à droite: 6
+instructions (40)
+    à gauche: 17 18, à droite: 3 17
+instruction (41)
+    à gauche: 19 20, à droite: 17
+expression (42)
+    à gauche: 21 22 23 24 25 26 27, à droite: 2 15 21 22 23 24 25
+    29 30
+calculus (43)
+    à gauche: 29, à droite: 19
+$@2 (44)
+    à gauche: 28, à droite: 29
+print (45)
+    à gauche: 30, à droite: 20
+
+
+État 0
+
+    0 $accept: . start $end
+
+    tMAIN  décalage et aller à l'état 1
+
+    start  aller à l'état 2
+
+
+État 1
+
+    1 start: tMAIN . tPAR_L tPAR_R tACC_L content return tACC_R
+
+    tPAR_L  décalage et aller à l'état 3
+
+
+État 2
+
+    0 $accept: start . $end
+
+    $end  décalage et aller à l'état 4
+
+
+État 3
+
+    1 start: tMAIN tPAR_L . tPAR_R tACC_L content return tACC_R
+
+    tPAR_R  décalage et aller à l'état 5
+
+
+État 4
+
+    0 $accept: start $end .
+
+    $défaut  accepter
+
+
+État 5
+
+    1 start: tMAIN tPAR_L tPAR_R . tACC_L content return tACC_R
+
+    tACC_L  décalage et aller à l'état 6
+
+
+État 6
+
+    1 start: tMAIN tPAR_L tPAR_R tACC_L . content return tACC_R
+
+    tCONST  décalage et aller à l'état 7
+
+    tINT      réduction par utilisation de la règle 8 (facult_const)
+    tFLOAT    réduction par utilisation de la règle 8 (facult_const)
+    tDOUBLE   réduction par utilisation de la règle 8 (facult_const)
+    $défaut  réduction par utilisation de la règle 5 (declarations_variables)
+
+    content                 aller à l'état 8
+    declarations_variables  aller à l'état 9
+    declaration_variable    aller à l'état 10
+    facult_const            aller à l'état 11
+
+
+État 7
+
+    7 facult_const: tCONST .
+
+    $défaut  réduction par utilisation de la règle 7 (facult_const)
+
+
+État 8
+
+    1 start: tMAIN tPAR_L tPAR_R tACC_L content . return tACC_R
+
+    tRETURN  décalage et aller à l'état 12
+
+    return  aller à l'état 13
+
+
+État 9
+
+    3 content: declarations_variables . instructions
+
+    tPRINT  décalage et aller à l'état 14
+    tID     décalage et aller à l'état 15
+
+    $défaut  réduction par utilisation de la règle 18 (instructions)
+
+    instructions  aller à l'état 16
+    instruction   aller à l'état 17
+    calculus      aller à l'état 18
+    print         aller à l'état 19
+
+
+État 10
+
+    4 declarations_variables: declaration_variable . declarations_variables
+
+    tCONST  décalage et aller à l'état 7
+
+    tINT      réduction par utilisation de la règle 8 (facult_const)
+    tFLOAT    réduction par utilisation de la règle 8 (facult_const)
+    tDOUBLE   réduction par utilisation de la règle 8 (facult_const)
+    $défaut  réduction par utilisation de la règle 5 (declarations_variables)
+
+    declarations_variables  aller à l'état 20
+    declaration_variable    aller à l'état 10
+    facult_const            aller à l'état 11
+
+
+État 11
+
+    6 declaration_variable: facult_const . type ids facult_assignement tBRK_PT
+
+    tINT     décalage et aller à l'état 21
+    tFLOAT   décalage et aller à l'état 22
+    tDOUBLE  décalage et aller à l'état 23
+
+    type  aller à l'état 24
+
+
+État 12
+
+    2 return: tRETURN . expression tBRK_PT
+
+    tPAR_L   décalage et aller à l'état 25
+    tID      décalage et aller à l'état 26
+    tNUMBER  décalage et aller à l'état 27
+
+    expression  aller à l'état 28
+
+
+État 13
+
+    1 start: tMAIN tPAR_L tPAR_R tACC_L content return . tACC_R
+
+    tACC_R  décalage et aller à l'état 29
+
+
+État 14
+
+   30 print: tPRINT . tPAR_L expression tPAR_R tBRK_PT
+
+    tPAR_L  décalage et aller à l'état 30
+
+
+État 15
+
+   29 calculus: tID . $@2 tAFFECT expression tBRK_PT
+
+    $défaut  réduction par utilisation de la règle 28 ($@2)
+
+    $@2  aller à l'état 31
+
+
+État 16
+
+    3 content: declarations_variables instructions .
+
+    $défaut  réduction par utilisation de la règle 3 (content)
+
+
+État 17
+
+   17 instructions: instruction . instructions
+
+    tPRINT  décalage et aller à l'état 14
+    tID     décalage et aller à l'état 15
+
+    $défaut  réduction par utilisation de la règle 18 (instructions)
+
+    instructions  aller à l'état 32
+    instruction   aller à l'état 17
+    calculus      aller à l'état 18
+    print         aller à l'état 19
+
+
+État 18
+
+   19 instruction: calculus .
+
+    $défaut  réduction par utilisation de la règle 19 (instruction)
+
+
+État 19
+
+   20 instruction: print .
+
+    $défaut  réduction par utilisation de la règle 20 (instruction)
+
+
+État 20
+
+    4 declarations_variables: declaration_variable declarations_variables .
+
+    $défaut  réduction par utilisation de la règle 4 (declarations_variables)
+
+
+État 21
+
+    9 type: tINT .
+
+    $défaut  réduction par utilisation de la règle 9 (type)
+
+
+État 22
+
+   10 type: tFLOAT .
+
+    $défaut  réduction par utilisation de la règle 10 (type)
+
+
+État 23
+
+   11 type: tDOUBLE .
+
+    $défaut  réduction par utilisation de la règle 11 (type)
+
+
+État 24
+
+    6 declaration_variable: facult_const type . ids facult_assignement tBRK_PT
+
+    tID  décalage et aller à l'état 33
+
+    ids  aller à l'état 34
+
+
+État 25
+
+   21 expression: tPAR_L . expression tPAR_R
+
+    tPAR_L   décalage et aller à l'état 25
+    tID      décalage et aller à l'état 26
+    tNUMBER  décalage et aller à l'état 27
+
+    expression  aller à l'état 35
+
+
+État 26
+
+   26 expression: tID .
+
+    $défaut  réduction par utilisation de la règle 26 (expression)
+
+
+État 27
+
+   27 expression: tNUMBER .
+
+    $défaut  réduction par utilisation de la règle 27 (expression)
+
+
+État 28
+
+    2 return: tRETURN expression . tBRK_PT
+   22 expression: expression . tPLUS expression
+   23           | expression . tMINUS expression
+   24           | expression . tMULT expression
+   25           | expression . tDIV expression
+
+    tPLUS    décalage et aller à l'état 36
+    tMINUS   décalage et aller à l'état 37
+    tMULT    décalage et aller à l'état 38
+    tDIV     décalage et aller à l'état 39
+    tBRK_PT  décalage et aller à l'état 40
+
+
+État 29
+
+    1 start: tMAIN tPAR_L tPAR_R tACC_L content return tACC_R .
+
+    $défaut  réduction par utilisation de la règle 1 (start)
+
+
+État 30
+
+   30 print: tPRINT tPAR_L . expression tPAR_R tBRK_PT
+
+    tPAR_L   décalage et aller à l'état 25
+    tID      décalage et aller à l'état 26
+    tNUMBER  décalage et aller à l'état 27
+
+    expression  aller à l'état 41
+
+
+État 31
+
+   29 calculus: tID $@2 . tAFFECT expression tBRK_PT
+
+    tAFFECT  décalage et aller à l'état 42
+
+
+État 32
+
+   17 instructions: instruction instructions .
+
+    $défaut  réduction par utilisation de la règle 17 (instructions)
+
+
+État 33
+
+   13 ids: tID . $@1 tCOMA ids
+   14    | tID .
+
+    tCOMA     réduction par utilisation de la règle 12 ($@1)
+    $défaut  réduction par utilisation de la règle 14 (ids)
+
+    $@1  aller à l'état 43
+
+
+État 34
+
+    6 declaration_variable: facult_const type ids . facult_assignement tBRK_PT
+
+    tAFFECT  décalage et aller à l'état 44
+
+    $défaut  réduction par utilisation de la règle 16 (facult_assignement)
+
+    facult_assignement  aller à l'état 45
+
+
+État 35
+
+   21 expression: tPAR_L expression . tPAR_R
+   22           | expression . tPLUS expression
+   23           | expression . tMINUS expression
+   24           | expression . tMULT expression
+   25           | expression . tDIV expression
+
+    tPLUS   décalage et aller à l'état 36
+    tMINUS  décalage et aller à l'état 37
+    tMULT   décalage et aller à l'état 38
+    tDIV    décalage et aller à l'état 39
+    tPAR_R  décalage et aller à l'état 46
+
+
+État 36
+
+   22 expression: expression tPLUS . expression
+
+    tPAR_L   décalage et aller à l'état 25
+    tID      décalage et aller à l'état 26
+    tNUMBER  décalage et aller à l'état 27
+
+    expression  aller à l'état 47
+
+
+État 37
+
+   23 expression: expression tMINUS . expression
+
+    tPAR_L   décalage et aller à l'état 25
+    tID      décalage et aller à l'état 26
+    tNUMBER  décalage et aller à l'état 27
+
+    expression  aller à l'état 48
+
+
+État 38
+
+   24 expression: expression tMULT . expression
+
+    tPAR_L   décalage et aller à l'état 25
+    tID      décalage et aller à l'état 26
+    tNUMBER  décalage et aller à l'état 27
+
+    expression  aller à l'état 49
+
+
+État 39
+
+   25 expression: expression tDIV . expression
+
+    tPAR_L   décalage et aller à l'état 25
+    tID      décalage et aller à l'état 26
+    tNUMBER  décalage et aller à l'état 27
+
+    expression  aller à l'état 50
+
+
+État 40
+
+    2 return: tRETURN expression tBRK_PT .
+
+    $défaut  réduction par utilisation de la règle 2 (return)
+
+
+État 41
+
+   22 expression: expression . tPLUS expression
+   23           | expression . tMINUS expression
+   24           | expression . tMULT expression
+   25           | expression . tDIV expression
+   30 print: tPRINT tPAR_L expression . tPAR_R tBRK_PT
+
+    tPLUS   décalage et aller à l'état 36
+    tMINUS  décalage et aller à l'état 37
+    tMULT   décalage et aller à l'état 38
+    tDIV    décalage et aller à l'état 39
+    tPAR_R  décalage et aller à l'état 51
+
+
+État 42
+
+   29 calculus: tID $@2 tAFFECT . expression tBRK_PT
+
+    tPAR_L   décalage et aller à l'état 25
+    tID      décalage et aller à l'état 26
+    tNUMBER  décalage et aller à l'état 27
+
+    expression  aller à l'état 52
+
+
+État 43
+
+   13 ids: tID $@1 . tCOMA ids
+
+    tCOMA  décalage et aller à l'état 53
+
+
+État 44
+
+   15 facult_assignement: tAFFECT . expression
+
+    tPAR_L   décalage et aller à l'état 25
+    tID      décalage et aller à l'état 26
+    tNUMBER  décalage et aller à l'état 27
+
+    expression  aller à l'état 54
+
+
+État 45
+
+    6 declaration_variable: facult_const type ids facult_assignement . tBRK_PT
+
+    tBRK_PT  décalage et aller à l'état 55
+
+
+État 46
+
+   21 expression: tPAR_L expression tPAR_R .
+
+    $défaut  réduction par utilisation de la règle 21 (expression)
+
+
+État 47
+
+   22 expression: expression . tPLUS expression
+   22           | expression tPLUS expression .
+   23           | expression . tMINUS expression
+   24           | expression . tMULT expression
+   25           | expression . tDIV expression
+
+    tMULT  décalage et aller à l'état 38
+    tDIV   décalage et aller à l'état 39
+
+    $défaut  réduction par utilisation de la règle 22 (expression)
+
+
+État 48
+
+   22 expression: expression . tPLUS expression
+   23           | expression . tMINUS expression
+   23           | expression tMINUS expression .
+   24           | expression . tMULT expression
+   25           | expression . tDIV expression
+
+    tMULT  décalage et aller à l'état 38
+    tDIV   décalage et aller à l'état 39
+
+    $défaut  réduction par utilisation de la règle 23 (expression)
+
+
+État 49
+
+   22 expression: expression . tPLUS expression
+   23           | expression . tMINUS expression
+   24           | expression . tMULT expression
+   24           | expression tMULT expression .
+   25           | expression . tDIV expression
+
+    $défaut  réduction par utilisation de la règle 24 (expression)
+
+
+État 50
+
+   22 expression: expression . tPLUS expression
+   23           | expression . tMINUS expression
+   24           | expression . tMULT expression
+   25           | expression . tDIV expression
+   25           | expression tDIV expression .
+
+    $défaut  réduction par utilisation de la règle 25 (expression)
+
+
+État 51
+
+   30 print: tPRINT tPAR_L expression tPAR_R . tBRK_PT
+
+    tBRK_PT  décalage et aller à l'état 56
+
+
+État 52
+
+   22 expression: expression . tPLUS expression
+   23           | expression . tMINUS expression
+   24           | expression . tMULT expression
+   25           | expression . tDIV expression
+   29 calculus: tID $@2 tAFFECT expression . tBRK_PT
+
+    tPLUS    décalage et aller à l'état 36
+    tMINUS   décalage et aller à l'état 37
+    tMULT    décalage et aller à l'état 38
+    tDIV     décalage et aller à l'état 39
+    tBRK_PT  décalage et aller à l'état 57
+
+
+État 53
+
+   13 ids: tID $@1 tCOMA . ids
+
+    tID  décalage et aller à l'état 33
+
+    ids  aller à l'état 58
+
+
+État 54
+
+   15 facult_assignement: tAFFECT expression .
+   22 expression: expression . tPLUS expression
+   23           | expression . tMINUS expression
+   24           | expression . tMULT expression
+   25           | expression . tDIV expression
+
+    tPLUS   décalage et aller à l'état 36
+    tMINUS  décalage et aller à l'état 37
+    tMULT   décalage et aller à l'état 38
+    tDIV    décalage et aller à l'état 39
+
+    $défaut  réduction par utilisation de la règle 15 (facult_assignement)
+
+
+État 55
+
+    6 declaration_variable: facult_const type ids facult_assignement tBRK_PT .
+
+    $défaut  réduction par utilisation de la règle 6 (declaration_variable)
+
+
+État 56
+
+   30 print: tPRINT tPAR_L expression tPAR_R tBRK_PT .
+
+    $défaut  réduction par utilisation de la règle 30 (print)
+
+
+État 57
+
+   29 calculus: tID $@2 tAFFECT expression tBRK_PT .
+
+    $défaut  réduction par utilisation de la règle 29 (calculus)
+
+
+État 58
+
+   13 ids: tID $@1 tCOMA ids .
+
+    $défaut  réduction par utilisation de la règle 13 (ids)

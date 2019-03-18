@@ -1,0 +1,11 @@
+main(){
+	int a = 7;
+	int b = a / 2;
+	int c; 
+	int dafafopkjpaefk, e;
+
+	c =  ((a + b) /(2 / 7)) * 2;
+	
+	print(77);
+	return 0;
+}
