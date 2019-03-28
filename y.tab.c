@@ -1295,7 +1295,13 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-        case 13:
+        case 10:
+#line 36 "compiler.y" /* yacc.c:1646  */
+    { type = "int"; }
+#line 1302 "y.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 13:
 #line 37 "compiler.y" /* yacc.c:1646  */
     { printf("TIDDD : %s\n", (yyvsp[0].var)); sym_node_struct node; 
 								node.type = "double"; 
@@ -1303,29 +1309,29 @@ yyreduce:
 								node.address = 4500;
 								node.depth = 0;
 								node.initialized = 1; }
-#line 1307 "y.tab.c" /* yacc.c:1646  */
+#line 1313 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
 #line 42 "compiler.y" /* yacc.c:1646  */
     {}
-#line 1313 "y.tab.c" /* yacc.c:1646  */
+#line 1319 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
 #line 54 "compiler.y" /* yacc.c:1646  */
     {}
-#line 1319 "y.tab.c" /* yacc.c:1646  */
+#line 1325 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
 #line 57 "compiler.y" /* yacc.c:1646  */
     {}
-#line 1325 "y.tab.c" /* yacc.c:1646  */
+#line 1331 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1329 "y.tab.c" /* yacc.c:1646  */
+#line 1335 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
