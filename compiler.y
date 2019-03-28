@@ -1,7 +1,20 @@
 %{
+	#include <stdio.h>
+
 	#include "sym_table.h"
+	#include "assem_table.h"
+
 	int yylex(void);
 	void yyerror(char*);
+
+	//			Déclaration variables globales
+	char *the_type;
+	int the_depth = 0;
+	int the_next_address = 0;
+
+	//			Déclaration structure
+	struct assembly_instruction* assem_op_table = NULL;
+	struct Stack* stack = NULL;
 %}
 
 %union { int nb ; char * var ; }
@@ -17,7 +30,7 @@
 
 %%
 
-start					: tMAIN tPAR_L tPAR_R tACC_L content return tACC_R;
+start					: tMAIN tPAR_L tPAR_R tACC_L { the_depth++; } content return tACC_R { the_depth--; };
 return  				: tRETURN expression tBRK_PT;
 content					: declarations_variables instructions;
 
@@ -30,21 +43,21 @@ content					: declarations_variables instructions;
  *		int a, b = 2, c , d = 4, e; // à ajouter
  */
 declarations_variables	: declaration_variable declarations_variables | ;
-declaration_variable	: facult_const type ids facult_assignement tBRK_PT;
+declaration_variable	: facult_const type ids tBRK_PT;
 
 facult_const			: tCONST | ;
-type					: tINT { type = "int"; } | tFLOAT | tDOUBLE;
-ids						: tID { printf("TIDDD : %s\n", $1); sym_node_struct node; 
-								node.type = "double"; 
-								node.symbol = "aa";
-								node.address = 4500;
-								node.depth = 0;
-								node.initialized = 1; }  tCOMA ids | tID {};
+type					: tINT { the_type = "int"; } | tFLOAT { the_type = "float"; } | tDOUBLE { the_type = "double"; };
+ids						: tID {	sym_node_struct node;
+								init_node(the_type, $1, the_next_address, the_depth, 1);
+								the_next_addr++; } facult_assignement tCOMA ids
+						| tID {	sym_node_struct node; 
+								init_node(the_type, $1, the_next_address, the_depth, 1);
+								the_next_address++; } facult_assignement ;
 
 facult_assignement		: tAFFECT expression | ;
 
 instructions			: instruction instructions | ;
-instruction				: calculus | print;
+instruction				: calculus | print | appelfonction ;
 
 expression				: tPAR_L expression tPAR_R
 						| expression tPLUS	expression
@@ -61,13 +74,13 @@ print					: tPRINT tPAR_L expression tPAR_R tBRK_PT;
 %%
 int main(){
 	yydebug = 0;
-	
-	//struct Stack* stack = createStack(100);
+
+	assem_op_table = create_assem_table();
+
+	stack = createStack(100);
 
 	yyparse();
 	 
 }
-
-
 
 
