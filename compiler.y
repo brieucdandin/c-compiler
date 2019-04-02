@@ -13,7 +13,7 @@
 	int the_next_address = 0;
 
 	//			Déclaration structure
-	struct assembly_instruction* assem_op_table = NULL;
+	struct assembly_instruction_list* assem_op_list = NULL;
 	struct Stack* stack = NULL;
 %}
 
@@ -22,6 +22,8 @@
 %token tMAIN tRETURN tPRINT tIF tWHILE tINT tFLOAT tDOUBLE tCONST tACC_L tACC_R tOR tAND tEQUALS tDIFF tPLUS tMINUS tMULT tDIV tAFFECT tPAR_L tPAR_R tCOMA tBRK_PT 
 %token <var> tID
 %token <nb> tNUMBER
+
+%type <nb> expression
 
 %left tMINUS tPLUS
 %left tMULT tDIV
@@ -49,23 +51,36 @@ facult_const			: tCONST | ;
 type					: tINT { the_type = "int"; } | tFLOAT { the_type = "float"; } | tDOUBLE { the_type = "double"; };
 ids						: tID {	sym_node_struct node;
 								init_node(the_type, $1, the_next_address, the_depth, 1);
-								the_next_addr++; } facult_assignement tCOMA ids
+								the_next_address++; } facult_assignement tCOMA ids
 						| tID {	sym_node_struct node; 
 								init_node(the_type, $1, the_next_address, the_depth, 1);
 								the_next_address++; } facult_assignement ;
 
-facult_assignement		: tAFFECT expression | ;
+facult_assignement		: tAFFECT expression { affectation_int ($2, &assem_op_table); } 
+						| ;
 
 instructions			: instruction instructions | ;
-instruction				: calculus | print | appelfonction ;
+instruction				: calculus | print | /*appel_fonction*/ ;
 
 expression				: tPAR_L expression tPAR_R
-						| expression tPLUS	expression
-						| expression tMINUS	expression
-						| expression tMULT	expression
-						| expression tDIV	expression
-						| tID {}
-						| tNUMBER;
+						| expression tPLUS	expression  // {addition_int_int(		$1, $3, stack, assem_op_table, &the_next_address);}
+						| expression tMINUS	expression  // {soustraction_int_int(	$1, $3, stack, assem_op_table, &the_next_address);}
+						| expression tMULT	expression  // {multiplication_int_int($1, $3, stack, assem_op_table, &the_next_address);}
+						| expression tDIV	expression  // {division_int_int(		$1, $3, stack, assem_op_table, &the_next_address);}
+						| tID {	
+								sym_node_struct node;
+								init_node(the_type, "#temp", the_next_address, the_depth, 1);
+								memory_allocation($1, the_next_address);
+								the_next_address++ ;
+								
+							  }
+						| tNUMBER 
+							{
+								sym_node_struct node;
+								init_node(the_type, "#temp", the_next_address, the_depth, 1);
+								memory_allocation($1, the_next_address);
+								the_next_address++ ;
+							};
 
 calculus				: tID {} tAFFECT expression tBRK_PT;
 print					: tPRINT tPAR_L expression tPAR_R tBRK_PT;
@@ -75,7 +90,7 @@ print					: tPRINT tPAR_L expression tPAR_R tBRK_PT;
 int main(){
 	yydebug = 0;
 
-	assem_op_table = create_assem_table();
+	init_assem_list(assem_op_list);
 
 	stack = createStack(100);
 

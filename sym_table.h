@@ -7,7 +7,7 @@ typedef struct sym_node_struct {
 	int address;
 	int depth;
 	int initialized; // 1 if initialized, else 0.
-}sym_node_struct;
+} sym_node_struct;
 
 struct Stack
 {
